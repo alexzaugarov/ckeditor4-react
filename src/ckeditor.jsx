@@ -58,7 +58,11 @@ class CKEditor extends React.Component {
 		getEditorNamespace( CKEditor.editorUrl ).then( CKEDITOR => {
 			const constructor = this.props.type === 'inline' ? 'inline' : 'replace';
 
-			const editor = this.editor = CKEDITOR[ constructor ]( this.element, this.props.config );
+			const editor = this.editor = CKEDITOR[constructor](this.element, this.props.config);
+			
+			if (this.onBeforeInit) {
+				this.onBeforeInit(editor);
+			}
 
 			this._attachEventHandlers();
 
@@ -112,7 +116,8 @@ CKEditor.propTypes = {
 	data: PropTypes.string,
 	config: PropTypes.object,
 	style: PropTypes.object,
-	readOnly: PropTypes.bool
+	readOnly: PropTypes.bool,
+	onBeforeInit: PropTypes.func
 };
 
 CKEditor.defaultProps = {
